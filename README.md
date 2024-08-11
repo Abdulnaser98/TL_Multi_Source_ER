@@ -1,3 +1,23 @@
+# Some key notes on Methods and data collection from the paper
+
+### Methods: 
+
+* Statistical methods are used to comapre the distributions between
+    the record Linkage tasks
+* Graph Clustering is used to cluster the linkage tasks into
+    strongly connected components
+* Active Learning metods are used to label the selected tasks.
+* Machine Learning algorithums are used to train them on the selected Linkage tasks that were labeled using Active Learning
+* Evaluation metrices are used to evaluate the perofrmane of the framework.
+   
+   
+   
+### Data collection: 
+*  Camera datasets (There are around 23 data sources)
+
+### Repository structure
+
+``` plain
 ├── 📁 data                   
 │   ├── 📁 raw_data             <-- Unprocessed camera datasets
 │   ├── 📁 cleaned_data         <-- Preprocessed camera datasets
@@ -34,3 +54,46 @@
 ├── 📃 main.py                <-- Algorithm comparison script
 ├── 📃 requirements.txt       <-- Configuration file for dependencies
 └── 📃 README.md              <-- Project documentation
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
