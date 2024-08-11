@@ -46,21 +46,21 @@ This README provides an overview of the methods used and the data collection pro
 │   └── 📁 linkage_results      <-- Precision, Recall, and F1-scores for the linkage tasks
 
 ├── 📁 meta_tl                  <-- Project codebase
+│   ├── 📁 data_pre_processing      <-- Data preprocessing scripts
+│   │   ├── 📃 data_cleaning.py     <-- Various methods used to clean raw data sources
+│   │   ├── 📃 generate_ground_truth_data.py  <-- Generates ground truth labels for the record pairs
+│   │   └── 📁 record_linkage           <-- Implementation of the record linkage process
+│   │       ├── 📃 blocking.py          <-- Methods for blocking
+│   │       ├── 📃 comparison.py        <-- Methods for comparing records sharing the same blocking keys
+│   │       ├── 📃 load_data_set.py     <-- Prepares datasets for the record linkage process
+│   │       └── 📃 record_linkage_main.py <-- Main script for record linkage
 │   ├── 📃 statistical_tests.py     <-- Implementations of statistical methods for comparing linkage task distributions
 │   ├── 📃 graph_clustering.py      <-- Methods for graph clustering of linkage tasks
 │   ├── 📃 model_selection.py       <-- Methods for selecting linkage tasks from clusters
-│   ├── 📃 preprocessing.py         <-- Data preprocessing scripts
 │   ├── 📃 active_learning.py       <-- Active learning methods for labeling selected tasks
+│   ├── 📃 transfear_learning.py    <-- Apply the trained selected linkage tasks on the other linkage tasks
 │   ├── 📃 evaluation.py            <-- Implementation of evaluation methods for assessing the proposed methods
-│   ├── 📁 record_linkage           <-- Implementation of the record linkage process
-│   │   ├── 📃 blocking.py          <-- Methods for blocking
-│   │   ├── 📃 comparison.py        <-- Methods for comparing records sharing the same blocking keys
-│   │   ├── 📃 load_data_set.py     <-- Prepares datasets for the record linkage process
-│   │   └── 📃 record_linkage_main.py <-- Main script for record linkage
 │   ├── 📃 utils.py                 <-- Helper functions used throughout the project
-│   ├── 📁 data_pre_processing      <-- Data preprocessing scripts
-│   │   ├── 📃 data_cleaning.py     <-- Various methods used to clean raw data sources
-│   │   └── 📃 generate_ground_truth_data.py  <-- Generates ground truth labels for the record pairs
 
 ├── 📃 main.py                     <-- Main script for the project
 ├── 📃 requirements.txt            <-- Libraries and dependencies
