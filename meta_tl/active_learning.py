@@ -9,7 +9,7 @@ import xgboost as xgb
 
 # Add the path to custom modules
 sys.path.append('/Users/abdulnaser/Desktop/Masterarbeit/metadatatransferlearning-main/meta_tl/')
-from utils import delete_files_from_folder, prepare_dataframe_prediction
+from utils import delete_files, prepare_dataframe_prediction
 
 
 def allocate_active_learning_budget(selected_tasks, tasks_dir, tasks_info_df, min_budget_per_task, total_budget):
@@ -238,7 +238,7 @@ def label_linkage_tasks(selected_tasks, tasks_dir, tasks_info_df, min_budget, to
     None
     """
     # Clear the labeled tasks directory
-    delete_files_from_folder(labeled_tasks_dir)
+    delete_files(labeled_tasks_dir)
 
     # Allocate budgets to linkage tasks
     allocated_budgets = allocate_active_learning_budget(selected_tasks, tasks_dir, tasks_info_df, min_budget, total_budget)

@@ -15,15 +15,15 @@ import comparison
 import load_data_set
 import utils as utl
 
-path_to_working_dir = '/Users/abdulnaser/Desktop/Masterarbeit/metadatatransferlearning-main/meta_tl/'
+path_to_working_dir = '/Users/abdulnaser/Desktop/TL_Multi_Source_ER/'
 path_to_data_folder = path_to_working_dir + 'data/'
-path_to_sim_vector_folder =  path_to_data_folder + 'sim_dataframes/'
+path_to_sim_vector_folder =  path_to_data_folder + 'linkage_tasks/'
 
 
 
 def record_linkage_main():
     # Delete all files in the sim_vector_folder
-    utl.delete_files_from_folder(path_to_sim_vector_folder)
+    utl.delete_files(path_to_sim_vector_folder)
 
     # Header line available True or False
     header_line = True
@@ -35,7 +35,7 @@ def record_linkage_main():
     blocking_attr_list = ['famer_brand_list', 'famer_model_no_list']
 
 
-    cleaned_data_folder_path = "/Users/abdulnaser/Desktop/Masterarbeit/metadatatransferlearning-main/meta_tl/data/cleaned_data/"
+    cleaned_data_folder_path = "/Users/abdulnaser/Desktop/TL_Multi_Source_ER/data/cleaned_data/"
 
     # List all CSV files in the folder
     csv_files = [ file for file in os.listdir(cleaned_data_folder_path) if file.endswith('.csv')]

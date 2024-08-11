@@ -9,7 +9,7 @@ import pandas as pd
 warnings.filterwarnings("ignore")
 
 # Define the main path for the project
-MAIN_PATH = '/Users/abdulnaser/Desktop/Masterarbeit/metadatatransferlearning-main/meta_tl/'
+MAIN_PATH = '/Users/abdulnaser/Desktop/TL_Multi_Source_ER/'
 
 # Add the path to the custom module directory
 sys.path.append(MAIN_PATH)
@@ -25,7 +25,7 @@ from graph_clustering import create_graph, detect_communities_using_girvan_newma
 from model_selection import select_linkage_tasks_from_communities
 from active_learning import label_linkage_tasks
 from tranfear_learning_process import transfear_learning_process_main
-from evaluation import evaluate
+from evaluation import evaluate_predictions
 
 # Define paths to various data directories
 RECORD_LINKAGE_TASKS_PATH = os.path.join(MAIN_PATH, 'data/linkage_tasks/')
@@ -34,7 +34,7 @@ LABELED_RECORD_LINKAGE_TASKS_PATH = os.path.join(MAIN_PATH, 'data/linkage_tasks_
 
 
 # Define the configuration parameters
-STATISTICAL_TEST = 'ks_test'
+STATISTICAL_TEST = 'wasserstein_distance'
 FEATURE_CASE = 1  # 1 for all features to have the same distribution, 2 for majority of features to have the same distributions
 COMMUNITY_DETECTION_ALGORITHM = 'girvan_newman'  # or 'label_propagation_clustering'
 ACTIVE_LEARNING_ALGORITHM = 'bootstrapping'  # or 'margin'
@@ -85,6 +85,7 @@ linkage_tasks_similarity_df, linkage_tasks_general_df = compute_similarity_test(
 elapsed_time = time.time() - start_time
 print(f"Elapsed time for similarity test: {elapsed_time:.2f} seconds")
 
+'''
 # ===================================================
 # Step 3: Perform Graph Clustering on Linkage Tasks
 # ===================================================
@@ -154,3 +155,5 @@ transfear_learning_process_main(
 
 # Evaluate the performance of the labeled tasks
 evaluate(LABELED_RECORD_LINKAGE_TASKS_PATH)
+
+'''

@@ -11,7 +11,6 @@ from sklearn.metrics.pairwise import pairwise_kernels
 
 # Add the path to custom modules
 sys.path.append('/Users/abdulnaser/Desktop/Masterarbeit/metadatatransferlearning-main/meta_tl/')
-import config as conf
 from utils import prepare_dataframe_to_similarity_comparison, compute_weighted_mean_similarity
 
 # Suppress specific warning messages

@@ -1,10 +1,10 @@
 import pandas as pd
 import os
 
-path_to_data_folder = '/Users/abdulnaser/Desktop/Masterarbeit/metadatatransferlearning-main/meta_tl/data/'
+path_to_data_folder = '/Users/abdulnaser/Desktop/TL_Multi_Source_ER/data/'
 path_to_help_data = path_to_data_folder + 'help_data/'
 path_to_gt_folder = path_to_data_folder + 'ground_truth_data/'
-path_to_sim_vectors_folder = path_to_data_folder + 'sim_dataframes'
+path_to_sim_vectors_folder = path_to_data_folder + 'linkage_tasks'
 
 
 

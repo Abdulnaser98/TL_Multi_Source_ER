@@ -374,7 +374,7 @@ def save_similiarty_vectors_into_dataframe(sim_vectors,file_name):
     df = pd.DataFrame(data)
 
     # Specify the file path where you want to save the CSV file
-    file_path = "/Users/abdulnaser/Desktop/Masterarbeit/metadatatransferlearning-main/meta_tl/data/sim_dataframes/" + file_name + ".csv"
+    file_path = "/Users/abdulnaser/Desktop/TL_Multi_Source_ER/data/linkage_tasks/" + file_name + ".csv"
 
     # Save the DataFrame to the specified path as a CSV file
     df.to_csv(file_path, index=False)

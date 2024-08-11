@@ -4,8 +4,7 @@ import numpy as np
 import pandas as pd
 #from utils import *
 import sys
-sys.path.append('/Users/abdulnaser/Desktop/Masterarbeit/metadatatransferlearning-main/meta_tl/')
-import config as conf
+sys.path.append('/Users/abdulnaser/Desktop/TL_Multi_Source_ER/meta_tl/')
 from utils import *
 
 # Set the warning filter to "ignore"
@@ -18,9 +17,9 @@ columns_to_order = ['key', 'source','famer_model_list','famer_model_no_list','fa
                    ]
 
 
-path_to_raw_data = '/Users/abdulnaser/Desktop/Masterarbeit/metadatatransferlearning-main/meta_tl/data/raw_data/'
-path_to_cleaned_data = '/Users/abdulnaser/Desktop/Masterarbeit/metadatatransferlearning-main/meta_tl/data/cleaned_data/'
-path_to_help_data = '/Users/abdulnaser/Desktop/Masterarbeit/metadatatransferlearning-main/meta_tl/data/help_data/'
+path_to_raw_data = '/Users/abdulnaser/Desktop/TL_Multi_Source_ER/data/raw_data/'
+path_to_cleaned_data = '/Users/abdulnaser/Desktop/TL_Multi_Source_ER/data/cleaned_data/'
+path_to_help_data = '/Users/abdulnaser/Desktop/TL_Multi_Source_ER/data/help_data/'
 
 # Define cleaning functions for each source with their specific important features
 def clean_priceme_data(data):
@@ -1183,7 +1182,7 @@ def prepare_and_clean_data(to_duplicate=False):
     clean_data(data,to_duplicate)
 
 
-prepare_and_clean_data(to_duplicate=False)
+prepare_and_clean_data(to_duplicate=True)
 
 
 
