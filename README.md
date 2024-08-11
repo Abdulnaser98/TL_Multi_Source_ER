@@ -2,6 +2,11 @@
 
 This README provides an overview of the methods used and the data collection process in this project.
 
+The objective of this project is to apply Transfear Learning in the context of multi source Entity resolution. 
+
+This is the project Pipline
+![Project Workflow](images/workflow.png)
+
 ## Methods
 
 - **Statistical Methods**  
