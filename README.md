@@ -24,11 +24,6 @@ This README provides an overview of the methods used and the data collection pro
 - **Camera Datasets**  
   Data collected from approximately 23 different sources.
 
-   
-   
-### Data collection: 
-*  Camera datasets (There are around 23 data sources)
-
 ### Repository structure
 
 ``` plain
