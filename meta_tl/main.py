@@ -21,7 +21,7 @@ from utils import (
     count_total_records,
 )
 from statistical_tests import compute_similarity_test
-from graph_clustering import create_graph, detect_communities_using_girvan_newman
+from graph_clustering import create_graph, detect_communities
 from model_selection import select_linkage_tasks_from_communities
 from active_learning import label_linkage_tasks
 from tranfear_learning_process import transfear_learning_process_main
@@ -34,12 +34,12 @@ LABELED_RECORD_LINKAGE_TASKS_PATH = os.path.join(MAIN_PATH, 'data/linkage_tasks_
 
 
 # Define the configuration parameters
-STATISTICAL_TEST = 'wasserstein_distance'
+STATISTICAL_TEST = 'calculate_psi' # or
 FEATURE_CASE = 1  # 1 for all features to have the same distribution, 2 for majority of features to have the same distributions
 COMMUNITY_DETECTION_ALGORITHM = 'girvan_newman'  # or 'label_propagation_clustering'
 ACTIVE_LEARNING_ALGORITHM = 'bootstrapping'  # or 'margin'
 ACTIVE_LEARNING_ITERATION_BUDGET = 20
-ACTIVE_LEARNING_TOTAL_BUDGET = 2000
+ACTIVE_LEARNING_TOTAL_BUDGET = 1000
 
 RELEVANT_COLUMNS_IN_LINKAGE_TASKS = ['Produktname_dic3', 'Modell_Liste_3g', 'MPN_Liste_TruncateBegin20',
             'EAN_Liste_TruncateBegin20', 'Digital_zoom_NumMaxProz30',
@@ -85,7 +85,7 @@ linkage_tasks_similarity_df, linkage_tasks_general_df = compute_similarity_test(
 elapsed_time = time.time() - start_time
 print(f"Elapsed time for similarity test: {elapsed_time:.2f} seconds")
 
-'''
+
 # ===================================================
 # Step 3: Perform Graph Clustering on Linkage Tasks
 # ===================================================
@@ -97,7 +97,7 @@ graph, task_mapping = create_graph(linkage_tasks_similarity_df)
 start_time = time.time()
 
 # Detect communities within the graph using the selected algorithm
-linkage_task_communities = detect_communities_using_girvan_newman(
+linkage_task_communities = detect_communities(
     COMMUNITY_DETECTION_ALGORITHM, graph
 )
 
@@ -129,10 +129,10 @@ print(f"Elapsed time for task selection: {elapsed_time:.2f} seconds")
 start_time = time.time()
 
 # Apply active learning to label the selected tasks (uncomment when ready)
-labeled_tasks = apply_active_learning_to_linkage_tasks(
+labeled_tasks = label_linkage_tasks(
      selected_tasks, RECORD_LINKAGE_TASKS_PATH, linkage_tasks_general_df,
-     min_budget=ACTIVE_LEARNING_ITERATION_BUDGET, total_budget=ACTIVE_LEARNING_TOTAL_BUDGET, tasks_labeled_folder=LABELED_RECORD_LINKAGE_TASKS_PATH,
-     relevant_columns_in_active_learning = RELEVANT_COLUMNS_IN_ACTIVE_LEARNING
+     min_budget=ACTIVE_LEARNING_ITERATION_BUDGET, total_budget=ACTIVE_LEARNING_TOTAL_BUDGET, labeled_tasks_dir=LABELED_RECORD_LINKAGE_TASKS_PATH,active_learning_strategy = ACTIVE_LEARNING_ALGORITHM,
+     relevant_columns = RELEVANT_COLUMNS_IN_ACTIVE_LEARNING
 )
 
 # Calculate and print the elapsed time for active learning
@@ -142,18 +142,28 @@ print(f"Elapsed time for active learning: {elapsed_time:.2f} seconds")
 # ===================================================
 # Step 6: Perform Transfer Learning and Inference
 # ===================================================
+# Record the start time for active learning
+start_time = time.time()
 
 # Perform the main transfer learning process on the selected tasks
 transfear_learning_process_main(
     selected_tasks, LABELED_RECORD_LINKAGE_TASKS_PATH,
-    RECORD_LINKAGE_TASKS_PATH, to_predict_files=None
+    RECORD_LINKAGE_TASKS_PATH,RELEVANT_COLUMNS_IN_ACTIVE_LEARNING
 )
+
+# Calculate and print the elapsed time for active learning
+elapsed_time = time.time() - start_time
+print(f"Elapsed time for active learning: {elapsed_time:.2f} seconds")
 
 # ===================================================
 # Step 7: Evaluate the Results
 # ===================================================
+# Record the start time for active learning
+start_time = time.time()
 
 # Evaluate the performance of the labeled tasks
-evaluate(LABELED_RECORD_LINKAGE_TASKS_PATH)
+evaluate_predictions(LABELED_RECORD_LINKAGE_TASKS_PATH)
 
-'''
+# Calculate and print the elapsed time for active learning
+elapsed_time = time.time() - start_time
+print(f"Elapsed time for active learning: {elapsed_time:.2f} seconds")

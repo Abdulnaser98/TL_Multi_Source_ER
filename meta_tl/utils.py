@@ -323,8 +323,8 @@ def create_graph(record_linkage_tasks):
     G = nx.Graph()
 
     # Extract unique values from the first and second columns
-    first_column_nodes = set(record_linkage_tasks['first_linkage_tasks'].unique())
-    second_column_nodes = set(record_linkage_tasks['second_linkage_tasks'].unique())
+    first_column_nodes = set(record_linkage_tasks['first_task'].unique())
+    second_column_nodes = set(record_linkage_tasks['second_task'].unique())
 
     # Add nodes from the first column
     G.add_nodes_from(first_column_nodes)
@@ -334,7 +334,7 @@ def create_graph(record_linkage_tasks):
     G.add_nodes_from(unique_second_column_nodes)
 
     # Add edges from the 'first_file' and 'second_file' columns
-    edges = record_linkage_tasks[['first_linkage_tasks', 'second_linkage_tasks']].values.tolist()
+    edges = record_linkage_tasks[['first_task', 'second_task']].values.tolist()
     G.add_edges_from(edges)
 
     # Relabel nodes to consecutive numbers starting from 1
