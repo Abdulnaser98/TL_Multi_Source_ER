@@ -7,6 +7,14 @@ The objective of this project is to apply Transfear Learning in the context of m
 This is the project Pipline
 ![Project Workflow](workflow.jpeg)
 
+Our project pipeline is designed to effectively transfer learning to target linkage tasks while ensuring that these target tasks maintain the same distribution as those used to train the models.
+
+The pipeline begins with preprocessing the multiple data sources provided as input. Next, we generate feature vector datasets (linkage tasks) for each pair of datasets and apply a range of statistical and machine learning methods to identify similarities in their distributions.
+
+Once the similarities are identified, we construct a similarity graph and use community detection algorithms to cluster the datasets. From each of these clusters, we select several models, train them, and use their capabilities to infer and predict feature vector datasets that have similar distributions.
+
+
+
 ## Methods
 
 - **Statistical Methods**  
