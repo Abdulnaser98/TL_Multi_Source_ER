@@ -35,7 +35,7 @@ LABELED_RECORD_LINKAGE_TASKS_PATH = os.path.join(MAIN_PATH, 'data/linkage_tasks_
 
 # Define the configuration parameters
 STATISTICAL_TEST = 'ks_test' # or
-FEATURE_CASE = 1  # 1 for all features to have the same distribution, 2 for majority of features to have the same distributions
+FEATURE_CASE = 2  # 1 for all features to have the same distribution, 2 for majority of features to have the same distributions
 COMMUNITY_DETECTION_ALGORITHM = 'girvan_newman'  # or 'label_propagation_clustering'
 ACTIVE_LEARNING_ALGORITHM = 'bootstrapping'  # or 'margin'
 ACTIIVE_LEARNING_MIN_BUDGET = 20

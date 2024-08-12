@@ -287,12 +287,12 @@ def prepare_dataframe_to_similarity_comparison(file_path):
         df = df.drop(columns=['is_match'])
 
     # Replace "/" with NaN and convert all columns to numeric
-    df.replace('/', 2, inplace=True)
+    df.replace('/', np.nan, inplace=True)
     df = df.apply(pd.to_numeric, errors='coerce')
 
     # Filter columns where the percentage of NaN values is over the threshold
-    #filtered_columns = df.columns[df.isna().mean() < threshold_percentage / 100]
-    #df = df[filtered_columns]
+    filtered_columns = df.columns[df.isna().mean() < threshold_percentage / 100]
+    df = df[filtered_columns]
 
     return df
 

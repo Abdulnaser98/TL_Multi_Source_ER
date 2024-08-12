@@ -109,6 +109,7 @@ def compare_linkage_tasks(task_1_path, task_2_path, task_1_name, task_2_name, te
     Returns:
     tuple: Names of the compared files and a list of resulting values from the statistical tests.
     """
+
     if multivariate:
         if test_type == 'ML_based':
             df_1 = prepare_dataframe_to_similarity_comparison(task_1_path)
@@ -140,20 +141,39 @@ def compare_linkage_tasks(task_1_path, task_2_path, task_1_name, task_2_name, te
             if column not in intersection_columns:
                 stat_lists[column].append(-2)
             else:
-                if test_type == 'ks_test':
-                    ks_stat, p_value = ks_2samp(df_1[column], df_2[column])
-                    stat_lists[column].append(p_value)
-                    results.append(p_value)
-                elif test_type == 'wasserstein_distance':
-                    w_dist = wasserstein_distance(df_1[column], df_2[column])
-                    stat_lists[column].append(w_dist)
-                    results.append(w_dist)
-                elif test_type == 'calculate_psi':
-                    psi_value = calculate_psi(df_1[column], df_2[column])
-                    stat_lists[column].append(psi_value)
-                    results.append(psi_value)
+                col1_is_nan = df_1[column].dropna().empty
+                col2_is_nan = df_2[column].dropna().empty
+
+                if col1_is_nan and col2_is_nan:
+                    if test_type == 'ks_test':
+                        stat_lists[column].append(0.06)
+                        results.append(0.06)
+                    elif test_type in ['wasserstein_distance', 'calculate_psi']:
+                        stat_lists[column].append(0.9)
+                        results.append(0.9)
+                elif col1_is_nan or col2_is_nan:
+                    if test_type == 'ks_test':
+                        stat_lists[column].append(0.04)
+                        results.append(0.04)
+                    elif test_type in ['wasserstein_distance', 'calculate_psi']:
+                        stat_lists[column].append(0.2)
+                        results.append(0.2)
+                else:
+                    if test_type == 'ks_test':
+                        ks_stat, p_value = ks_2samp(df_1[column].dropna(), df_2[column].dropna())
+                        stat_lists[column].append(p_value)
+                        results.append(p_value)
+                    elif test_type == 'wasserstein_distance':
+                        w_dist = wasserstein_distance(df_1[column].dropna(), df_2[column].dropna())
+                        stat_lists[column].append(w_dist)
+                        results.append(w_dist)
+                    elif test_type == 'calculate_psi':
+                        psi_value = calculate_psi(df_1[column].dropna(), df_2[column].dropna())
+                        stat_lists[column].append(psi_value)
+                        results.append(psi_value)
 
         return task_1_name, task_2_name, results
+
 
 
 def evaluate_similarity(results, test_type, case, alpha=0.05):
