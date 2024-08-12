@@ -17,7 +17,7 @@ def allocate_active_learning_budget(selected_tasks, tasks_dir, tasks_info_df, mi
     Allocate the active learning budget to both community (non-singleton) and singleton tasks.
 
     Parameters:
-    selected_tasks (dict): A dictionary of selected tasks.
+    selected_tasks (dict): A dictionary where the keys are the largest CSV file in the community (community leader), and the values are lists of CSV files in the community.
     tasks_dir (str): The directory containing the linkage tasks files.
     tasks_info_df (pd.DataFrame): DataFrame containing information about linkage tasks.
     min_budget_per_task (int): The minimum budget to allocate per task.
@@ -27,12 +27,23 @@ def allocate_active_learning_budget(selected_tasks, tasks_dir, tasks_info_df, mi
     dict: A dictionary with task names as keys and their allocated budgets as values.
     """
     budget_allocation = {}
+    community_sizes = {}
 
-    # Allocate budget for community (non-singleton) tasks
-    for task in selected_tasks:
-        task_path = os.path.join(tasks_dir, task)
-        task_df = pd.read_csv(task_path)
-        budget_allocation[task] = task_df.shape[0]
+    # Calculate the total size of all files in each community (non-singleton tasks)
+    for community_leader, community_files in selected_tasks.items():
+        # Calculate the size of the community leader directly
+        leader_path = os.path.join(tasks_dir, community_leader)
+        leader_df = pd.read_csv(leader_path)
+        leader_size = leader_df.shape[0]
+
+        # Calculate the size of the rest of the community
+        rest_of_community_size = sum(pd.read_csv(os.path.join(tasks_dir, task)).shape[0] for task in community_files if task != community_leader)
+
+        # Combine the leader size with the rest of the community size
+        total_community_size = leader_size + rest_of_community_size
+
+        community_sizes[community_leader] = total_community_size
+        budget_allocation[community_leader] = total_community_size
 
     # Identify singleton tasks (tasks that do not belong to any community)
     non_singleton_tasks = tasks_info_df[tasks_info_df['similarity'] == 1]['first_task'].tolist()
@@ -40,7 +51,7 @@ def allocate_active_learning_budget(selected_tasks, tasks_dir, tasks_info_df, mi
 
     # Allocate budget for singleton tasks
     for task in all_tasks:
-        if task not in non_singleton_tasks:
+        if task not in non_singleton_tasks and task not in budget_allocation:
             task_path = os.path.join(tasks_dir, task)
             task_df = pd.read_csv(task_path)
             budget_allocation[task] = task_df.shape[0]
@@ -55,15 +66,22 @@ def allocate_active_learning_budget(selected_tasks, tasks_dir, tasks_info_df, mi
     # Calculate the remaining budget after allocating the minimum budget
     remaining_budget = total_budget - total_min_budget
 
-    # Calculate the proportional allocations for the remaining budget
-    total_size = sum(budget_allocation.values())
-    proportional_allocations = {
-        task: (size / total_size) * remaining_budget for task, size in budget_allocation.items()
-    }
+    # Calculate the proportional allocations for the remaining budget based on combined community sizes
+    total_size = sum(community_sizes.values()) + sum(budget_allocation[task] for task in budget_allocation if task not in community_sizes)
+    proportional_allocations = {}
+
+    # Distribute budget for community tasks based on combined size
+    for community_leader, total_community_size in community_sizes.items():
+        proportional_allocations[community_leader] = (total_community_size / total_size) * remaining_budget
+
+    # Distribute budget for singleton tasks
+    for task in budget_allocation:
+        if task not in proportional_allocations:  # Singleton tasks
+            proportional_allocations[task] = (budget_allocation[task] / total_size) * remaining_budget
 
     # Combine the minimum budget with the proportional allocations and round up the final allocations
     final_allocations = {
-        task: math.ceil(min_budget_per_task + budget) for task, budget in proportional_allocations.items()
+        task: math.ceil(min_budget_per_task + proportional_allocations.get(task, 0)) for task in budget_allocation
     }
 
     return final_allocations
@@ -220,7 +238,7 @@ def active_learning_margin(task_df, iteration_budget, total_budget):
     return task_df, used_budget
 
 
-def label_linkage_tasks(selected_tasks, tasks_dir, tasks_info_df, min_budget, total_budget, labeled_tasks_dir, active_learning_strategy, relevant_columns):
+def label_linkage_tasks(selected_tasks, tasks_dir, tasks_info_df, min_budget,iteration_budget,total_budget, labeled_tasks_dir, active_learning_strategy, relevant_columns):
     """
     Allocate budgets to selected linkage tasks and apply active learning to label them.
 
@@ -265,8 +283,8 @@ def label_linkage_tasks(selected_tasks, tasks_dir, tasks_info_df, min_budget, to
         # Apply the selected active learning strategy
         active_learning_function = strategy_map[active_learning_strategy]
         if task != 'www.canon-europe.com_cammarkt.com.csv':
-            labeled_df, used_budget = active_learning_function(processed_df, min_budget, budget)
+            labeled_df, used_budget = active_learning_function(processed_df, iteration_budget, budget)
             print(f"Task {task} labeled with a budget of {used_budget}")
 
-            # Save the labeled task
-            labeled_df.to_csv(os.path.join(labeled_tasks_dir, task), index=False)
+        # Save the labeled task
+        labeled_df.to_csv(os.path.join(labeled_tasks_dir, task), index=False)
