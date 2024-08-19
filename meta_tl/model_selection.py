@@ -1,6 +1,5 @@
 import pandas as pd
 import sys
-sys.path.append('/Users/abdulnaser/Desktop/Masterarbeit/metadatatransferlearning-main/meta_tl/')
 from utils import *
 
 def select_largest_file_in_community(path_to_sim_vector_folder,community, node_mapping):

@@ -8,7 +8,6 @@ import pandas as pd
 import xgboost as xgb
 
 # Add the path to custom modules
-sys.path.append('/Users/abdulnaser/Desktop/Masterarbeit/metadatatransferlearning-main/meta_tl/')
 from utils import delete_files, prepare_dataframe_prediction
 
 
@@ -46,7 +45,12 @@ def allocate_active_learning_budget(selected_tasks, tasks_dir, tasks_info_df, mi
         budget_allocation[community_leader] = total_community_size
 
     # Identify singleton tasks (tasks that do not belong to any community)
-    non_singleton_tasks = tasks_info_df[tasks_info_df['similarity'] == 1]['first_task'].tolist()
+    non_singleton_tasks = set(
+    tasks_info_df[tasks_info_df['similarity'] == 1]['first_task'].unique()
+    ).union(
+    tasks_info_df[tasks_info_df['similarity'] == 1]['second_task'].unique()
+    )
+
     all_tasks = set(tasks_info_df['first_task'].unique()).union(tasks_info_df['second_task'].unique())
 
     # Allocate budget for singleton tasks
@@ -285,6 +289,5 @@ def label_linkage_tasks(selected_tasks, tasks_dir, tasks_info_df, min_budget,ite
         if task != 'www.canon-europe.com_cammarkt.com.csv':
             labeled_df, used_budget = active_learning_function(processed_df, iteration_budget, budget)
             print(f"Task {task} labeled with a budget of {used_budget}")
-
-        # Save the labeled task
-        labeled_df.to_csv(os.path.join(labeled_tasks_dir, task), index=False)
+            # Save the labeled task
+            labeled_df.to_csv(os.path.join(labeled_tasks_dir, task), index=False)

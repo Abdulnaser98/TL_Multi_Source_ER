@@ -1,6 +1,8 @@
+# Record the start time for performance measurement
+import time
+start_time = time.time()
 import os
 import sys
-import time
 import warnings
 
 import pandas as pd
@@ -34,13 +36,13 @@ LABELED_RECORD_LINKAGE_TASKS_PATH = os.path.join(MAIN_PATH, 'data/linkage_tasks_
 
 
 # Define the configuration parameters
-STATISTICAL_TEST = 'ks_test' # or
+STATISTICAL_TEST = 'wasserstein_distance' # or
 FEATURE_CASE = 2  # 1 for all features to have the same distribution, 2 for majority of features to have the same distributions
 COMMUNITY_DETECTION_ALGORITHM = 'girvan_newman'  # or 'label_propagation_clustering'
 ACTIVE_LEARNING_ALGORITHM = 'bootstrapping'  # or 'margin'
 ACTIIVE_LEARNING_MIN_BUDGET = 20
-ACTIVE_LEARNING_ITERATION_BUDGET = 5
-ACTIVE_LEARNING_TOTAL_BUDGET = 3000
+ACTIVE_LEARNING_ITERATION_BUDGET = 20
+ACTIVE_LEARNING_TOTAL_BUDGET = 2000
 
 RELEVANT_COLUMNS_IN_LINKAGE_TASKS = ['Produktname_dic3', 'Modell_Liste_3g', 'MPN_Liste_TruncateBegin20',
             'EAN_Liste_TruncateBegin20', 'Digital_zoom_NumMaxProz30',
@@ -168,3 +170,9 @@ evaluate_predictions(LABELED_RECORD_LINKAGE_TASKS_PATH)
 # Calculate and print the elapsed time for active learning
 elapsed_time = time.time() - start_time
 print(f"Elapsed time for active learning: {elapsed_time:.2f} seconds")
+
+
+# Calculate and print the elapsed time for the similarity test
+elapsed_time = time.time() - start_time
+print(f"Final Elapsed Time for the entire project is: {elapsed_time:.2f} seconds")
+

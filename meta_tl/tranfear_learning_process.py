@@ -1,5 +1,4 @@
 import sys
-sys.path.append('/Users/abdulnaser/Desktop/Masterarbeit/metadatatransferlearning-main/meta_tl/')
 from utils import *
 import xgboost as xgb
 

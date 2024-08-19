@@ -2,8 +2,6 @@ import networkx as nx
 from networkx.algorithms.community import girvan_newman
 from networkx.algorithms.community import asyn_lpa_communities
 from networkx.algorithms.community.quality import modularity
-import sys
-sys.path.append('/Users/abdulnaser/Desktop/Masterarbeit/metadatatransferlearning-main/meta_tl/')
 from utils import *
 
 

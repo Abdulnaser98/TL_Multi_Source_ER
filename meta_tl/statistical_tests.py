@@ -9,8 +9,6 @@ from scipy.stats import ks_2samp, wasserstein_distance
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics.pairwise import pairwise_kernels
 
-# Add the path to custom modules
-sys.path.append('/Users/abdulnaser/Desktop/Masterarbeit/metadatatransferlearning-main/meta_tl/')
 from utils import prepare_dataframe_to_similarity_comparison, compute_weighted_mean_similarity
 
 # Suppress specific warning messages
@@ -149,8 +147,8 @@ def compare_linkage_tasks(task_1_path, task_2_path, task_1_name, task_2_name, te
                         stat_lists[column].append(0.06)
                         results.append(0.06)
                     elif test_type in ['wasserstein_distance', 'calculate_psi']:
-                        stat_lists[column].append(0.9)
-                        results.append(0.9)
+                        stat_lists[column].append(0.09)
+                        results.append(0.09)
                 elif col1_is_nan or col2_is_nan:
                     if test_type == 'ks_test':
                         stat_lists[column].append(0.04)
@@ -273,5 +271,7 @@ def compute_similarity_test(case, test_type, tasks_path, relevant_columns, multi
 
     unique_tasks_count = len(set(unique_first_tasks) | set(unique_second_tasks))
     print(f"Total number of unique tasks with similar distribution: {unique_tasks_count}")
+
+    results_df.to_csv('wasserstein_test.csv')
 
     return similar_tasks_df, results_df
